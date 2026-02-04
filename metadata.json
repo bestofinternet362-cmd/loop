@@ -1,0 +1,8 @@
+
+{
+  "name": "Loop E-Commerce Pro",
+  "description": "A high-end, compact e-commerce platform featuring a modern product catalog, advanced filtering, admin management, and a Gemini-powered AI shopping assistant.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
