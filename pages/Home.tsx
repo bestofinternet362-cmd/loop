@@ -191,16 +191,16 @@ const Home: React.FC = () => {
               const isSide = Math.abs(offset) === 1;
               const spacing = window.innerWidth < 768 ? 260 : 420;
               const opacity = isFocused ? 1 : (isSide ? 0.3 : 0);
-              const scale = isFocused ? 1.4 : (isSide ? 0.7 : 0.4);
+              const scale = isFocused ? 1.15 : (isSide ? 0.7 : 0.4);
               const blur = isFocused ? 'blur(0px)' : 'blur(12px)';
 
               return (
                 <div
                   key={product.id}
-                  className="absolute transition-all duration-1000 ease-[cubic-bezier(0.34,1.56,0.64,1)] flex flex-col items-center w-[350px]"
+                  className="absolute transition-all duration-1000 ease-[cubic-bezier(0.34,1.56,0.64,1)] flex flex-col items-center w-[300px]"
                   style={{
                     left: '50%',
-                    marginLeft: '-175px',
+                    marginLeft: '-150px',
                     transform: `translateX(${offset * spacing}px) scale(${scale})`,
                     zIndex: isFocused ? 30 : (isSide ? 10 : 0),
                     opacity: opacity,
@@ -208,21 +208,21 @@ const Home: React.FC = () => {
                     pointerEvents: isFocused ? 'auto' : 'none',
                   }}
                 >
-                  <div className={`bg-white rounded-[70px] overflow-hidden aspect-square flex items-center justify-center p-16 mb-10 transition-all duration-700 ${isFocused ? 'shadow-[0_60px_100px_-20px_rgba(0,0,0,0.15)] border-4 border-zinc-50' : 'shadow-none'}`}>
+                  <div className={`bg-white rounded-[70px] overflow-hidden aspect-square flex items-center justify-center p-10 mb-6 transition-all duration-700 ${isFocused ? 'shadow-[0_60px_100px_-20px_rgba(0,0,0,0.15)] border-4 border-zinc-50' : 'shadow-none'}`}>
                     <img
                       src={product.image}
-                      className={`w-full h-full object-contain transition-transform duration-1000 ${isFocused ? 'scale-110 rotate-3' : 'scale-100'}`}
+                      className={`w-full h-full object-contain transition-transform duration-1000 ${isFocused ? 'scale-105 rotate-3' : 'scale-100'}`}
                       alt={product.name}
                     />
                   </div>
 
-                  <div className={`text-center transition-all duration-700 delay-100 w-full ${isFocused ? 'translate-y-0 opacity-100 visible' : 'translate-y-24 opacity-0 invisible'}`}>
-                    <p className="text-red-500 font-black text-[12px] uppercase tracking-[0.5em] mb-4">Elite Choice</p>
-                    <h3 className="font-black uppercase tracking-tighter text-5xl mb-3 text-zinc-900 leading-none">{product.name}</h3>
-                    <p className="text-zinc-400 font-bold text-4xl mb-10 tracking-tighter">${product.price}</p>
+                  <div className={`text-center transition-all duration-700 delay-100 w-full ${isFocused ? 'translate-y-0 opacity-100 visible' : 'translate-y-12 opacity-0 invisible'}`}>
+                    <p className="text-red-500 font-black text-[10px] uppercase tracking-[0.4em] mb-2">Elite Choice</p>
+                    <h3 className="font-black uppercase tracking-tighter text-3xl mb-2 text-zinc-900 leading-none px-4">{product.name}</h3>
+                    <p className="text-zinc-400 font-bold text-2xl mb-6 tracking-tighter">${product.price}</p>
                     <Link
                       to={`/product/${product.id}`}
-                      className="inline-block bg-zinc-900 text-white px-16 py-5 rounded-full font-black uppercase tracking-widest text-[11px] hover:bg-red-500 transition-all hover:scale-110 active:scale-95 shadow-2xl shadow-zinc-900/10"
+                      className="inline-block bg-zinc-900 text-white px-10 py-4 rounded-full font-black uppercase tracking-widest text-[10px] hover:bg-red-500 transition-all hover:scale-110 active:scale-95 shadow-xl shadow-zinc-900/10"
                     >
                       View Details
                     </Link>

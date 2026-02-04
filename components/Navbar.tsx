@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, ShoppingBag, Menu, X, User, LogOut, Shield } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { useCart } from '../contexts/CartContext';
 import Logo from './Logo';
 
 const Navbar: React.FC = () => {
@@ -10,6 +11,7 @@ const Navbar: React.FC = () => {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const navigate = useNavigate();
   const { user, profile, signOut, isAdmin } = useAuth();
+  const { cartCount, setIsCartOpen } = useCart();
 
   const handleSignOut = async () => {
     await signOut();
@@ -66,6 +68,11 @@ const Navbar: React.FC = () => {
                         Admin
                       </span>
                     )}
+                    {!isAdmin && (
+                      <span className="inline-block mt-2 bg-zinc-100 text-zinc-500 text-[8px] font-black uppercase tracking-wider px-2 py-1 rounded-full border border-zinc-200">
+                        {profile?.role || 'Customer'}
+                      </span>
+                    )}
                   </div>
                   {isAdmin && (
                     <Link
@@ -96,10 +103,19 @@ const Navbar: React.FC = () => {
           <button onClick={() => navigate('/shop')} className="p-1.5 text-zinc-900 hover:bg-zinc-100 rounded-full transition-colors">
             <Search size={20} strokeWidth={2.5} />
           </button>
-          <button className="p-1.5 text-zinc-900 relative hover:bg-zinc-100 rounded-full transition-colors">
+
+          <button
+            onClick={() => setIsCartOpen(true)}
+            className="p-1.5 text-zinc-900 relative hover:bg-zinc-100 rounded-full transition-colors"
+          >
             <ShoppingBag size={20} strokeWidth={2.5} />
-            <span className="absolute top-0 right-0 bg-red-500 text-white text-[8px] font-black w-4 h-4 rounded-full flex items-center justify-center border-2 border-white">2</span>
+            {cartCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[8px] font-black w-4 h-4 rounded-full flex items-center justify-center border-2 border-white">
+                {cartCount}
+              </span>
+            )}
           </button>
+
           <button className="md:hidden p-1.5 text-zinc-900" onClick={() => setIsOpen(!isOpen)}>
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>

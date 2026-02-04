@@ -35,7 +35,10 @@ const Shop: React.FC = () => {
 
   const sortedAndFilteredProducts = useMemo(() => {
     let filtered = products.filter(p => {
-      const matchSearch = p.name.toLowerCase().includes(filters.search.toLowerCase());
+      const searchLower = filters.search.toLowerCase();
+      const matchSearch = p.name.toLowerCase().includes(searchLower) ||
+        p.category.toLowerCase().includes(searchLower) ||
+        p.description.toLowerCase().includes(searchLower);
       const matchCategory = filters.category === '' || p.category === filters.category;
       const matchPrice = p.price >= filters.minPrice && p.price <= filters.maxPrice;
       return matchSearch && matchCategory && matchPrice;

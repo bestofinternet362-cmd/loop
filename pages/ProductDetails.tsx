@@ -5,6 +5,7 @@ import { ShoppingBag, ChevronLeft, Star, Heart, Share2, Truck, RefreshCcw, Packa
 import { getProductById, getProducts } from '../services/dataService';
 import { Product } from '../types';
 import ChatBot from '../components/ChatBot';
+import { useCart } from '../contexts/CartContext';
 
 const ProductDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -15,6 +16,8 @@ const ProductDetails: React.FC = () => {
   const [selectedSize, setSelectedSize] = useState<string>('');
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [activeTab, setActiveTab] = useState<'overview' | 'specs' | 'reviews'>('overview');
+
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const loadProduct = async () => {
@@ -244,7 +247,9 @@ const ProductDetails: React.FC = () => {
               <button
                 className="flex-1 bg-red-500 hover:bg-zinc-900 text-white font-black uppercase tracking-widest h-14 rounded-full transition-all flex items-center justify-center space-x-3 px-8 disabled:opacity-50 disabled:cursor-not-allowed"
                 onClick={() => {
-                  console.log('Adding to cart:', { product: product.name, quantity, color: selectedColor, size: selectedSize });
+                  if (product) {
+                    addToCart(product, quantity, selectedColor, selectedSize);
+                  }
                 }}
                 disabled={product.stock === 0}
               >

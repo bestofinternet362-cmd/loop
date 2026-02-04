@@ -8,7 +8,14 @@ const STORAGE_KEY = 'loop_local_products';
 export const getProducts = async (): Promise<Product[]> => {
   if (supabase) {
     const { data, error } = await supabase.from('products').select('*');
-    if (!error && data && data.length > 0) return data as Product[];
+    if (!error && data && data.length > 0) {
+      // Map Supabase snake_case to app camelCase
+      return data.map((item: any) => ({
+        ...item,
+        isBestSeller: item.is_best_seller, // valid JS property access
+        // Remove snake_case versions if needed, or keep them
+      })) as Product[];
+    }
   }
 
   // Fallback / Initial Seed
@@ -22,7 +29,15 @@ export const getProducts = async (): Promise<Product[]> => {
 
 export const saveProduct = async (product: Product): Promise<Product[]> => {
   if (supabase) {
-    const { error } = await supabase.from('products').upsert(product);
+    // Map app camelCase to Supabase snake_case
+    const dbProduct = {
+      ...product,
+      is_best_seller: product.isBestSeller,
+      // Remove camelCase versions if needed for strict schema
+    };
+
+    // We need to cast to any or a DB type because product types don't match DB exactly
+    const { error } = await supabase.from('products').upsert(dbProduct as any);
     if (!error) return await getProducts();
   }
 
