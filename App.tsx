@@ -11,6 +11,8 @@ import Shop from './pages/Shop';
 import ProductDetails from './pages/ProductDetails';
 import Admin from './pages/Admin';
 import Login from './pages/Login';
+import Checkout from './pages/Checkout';
+import OrderSuccess from './pages/OrderSuccess';
 
 const App: React.FC = () => {
   return (
@@ -26,6 +28,15 @@ const App: React.FC = () => {
                 <Route path="/shop" element={<Shop />} />
                 <Route path="/product/:id" element={<ProductDetails />} />
                 <Route path="/login" element={<Login />} />
+                <Route
+                  path="/checkout"
+                  element={
+                    <ProtectedRoute>
+                      <Checkout />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route path="/order-success" element={<OrderSuccess />} />
                 <Route
                   path="/admin"
                   element={

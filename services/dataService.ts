@@ -72,3 +72,64 @@ export const getProductById = async (id: string): Promise<Product | undefined> =
   const products = await getProducts();
   return products.find(p => p.id === id);
 };
+
+export interface OrderData {
+  email: string;
+  total_amount: number;
+  status: 'pending' | 'paid';
+  shipping_address: {
+    fullName: string;
+    address: string;
+    city: string;
+    zipCode: string;
+    country: string;
+  };
+}
+
+export interface OrderItemData {
+  product_id: string;
+  quantity: number;
+  price_at_time: number;
+  selected_color?: string;
+  selected_size?: string;
+}
+
+export const createOrder = async (orderData: OrderData, items: OrderItemData[]) => {
+  if (!supabase) {
+    console.warn('Supabase not configured, order not saved to DB');
+    return { success: true, id: 'local-order-' + Date.now() };
+  }
+
+  try {
+    // 1. Create Order
+    const { data: order, error: orderError } = await supabase
+      .from('orders')
+      .insert({
+        email: orderData.email,
+        total_amount: orderData.total_amount,
+        status: orderData.status,
+        shipping_address: orderData.shipping_address
+      })
+      .select()
+      .single();
+
+    if (orderError) throw orderError;
+
+    // 2. Create Order Items
+    const orderItems = items.map(item => ({
+      order_id: order.id,
+      ...item
+    }));
+
+    const { error: itemsError } = await supabase
+      .from('order_items')
+      .insert(orderItems);
+
+    if (itemsError) throw itemsError;
+
+    return { success: true, id: order.id, order };
+  } catch (error) {
+    console.error('Error creating order:', error);
+    return { success: false, error };
+  }
+};

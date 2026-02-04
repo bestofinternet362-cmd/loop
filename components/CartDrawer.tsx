@@ -94,9 +94,13 @@ const CartDrawer: React.FC = () => {
                             <span className="text-xs font-black uppercase tracking-widest text-gray-400">Total</span>
                             <span className="text-2xl font-black text-zinc-900">${cartTotal}</span>
                         </div>
-                        <button className="w-full bg-red-500 text-white py-4 rounded-full font-black uppercase tracking-widest text-xs hover:bg-zinc-900 transition-all flex items-center justify-center gap-2 shadow-xl shadow-red-500/20">
+                        <Link
+                            to="/checkout"
+                            onClick={() => setIsCartOpen(false)}
+                            className="w-full bg-red-500 text-white py-4 rounded-full font-black uppercase tracking-widest text-xs hover:bg-zinc-900 transition-all flex items-center justify-center gap-2 shadow-xl shadow-red-500/20"
+                        >
                             Checkout <ArrowRight size={16} />
-                        </button>
+                        </Link>
                     </div>
                 )}
             </div>
